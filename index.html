@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SachCheck – Health Myth Buster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+/* VOICE: warm, kind, clear - a grandparent and a 12-year-old must both get it in one look
+   IDEA: a doctor's rubber stamp on a forwarded WhatsApp message - TRUE / FALSE / NOT CHECKED
+   PICTURE: the message bubble with the big verdict stamp pressed onto it
+   COLOUR and TYPE: deep teal ground, white cards, saffron accent; stamps red / green / amber. Poppins (reads Hindi too)
+   LAYOUT: one calm column; tabs Check · All myths · Test · How it works */
+:root{color-scheme:light dark;
+ --bg:light-dark(#0f4c5c,#082f39);--card:light-dark(#ffffff,#10262d);--ink:light-dark(#14262b,#e9f3f4);--soft:light-dark(#5b6f74,#9fb6bb);
+ --line:light-dark(#dbe6e8,#24434b);--chip:light-dark(#eef5f6,#173840);--acc:#f59e0b;--accInk:#3b2300;
+ --f:#d92d20;--fbg:light-dark(#fff1ef,#3a1512);--t:#138a4b;--tbg:light-dark(#eafaf1,#0f3222);--u:#b86e00;--ubg:light-dark(#fff7e6,#3a2a0c)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Poppins,system-ui,sans-serif;overflow-x:clip}
+body.big{font-size:21px}
+h1,h2,h3{font-family:Poppins,sans-serif;font-weight:700;line-height:1.15;margin:0;text-wrap:balance}
+.brand h1{font-weight:800}
+a{color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{color:#fff;padding:22px 0 8px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:52px;height:52px;flex:none}
+.brand h1{font-size:clamp(32px,6vw,44px)}
+.brand h1 span{color:var(--acc)}
+.tag{opacity:.88;margin:2px 0 0;font-size:.95em}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 14px}
+nav a{text-decoration:none;color:#fff;background:rgba(255,255,255,.12);padding:10px 16px;border-radius:999px;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+nav a[aria-current=page]{background:#fff;color:#0f4c5c}
+.tool{margin-left:auto;display:flex;gap:6px}
+.tool button{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:999px;padding:0 14px;font:600 16px Poppins,sans-serif;min-height:44px;cursor:pointer}
+.card{background:var(--card);border-radius:22px;padding:clamp(18px,4vw,28px);box-shadow:0 10px 30px rgba(0,0,0,.18);margin-bottom:16px}
+label.big{display:block;font-family:Poppins;font-weight:700;font-size:1.25em;margin-bottom:8px}
+textarea,input,select{width:100%;font:inherit;font-size:max(16px,1em);color:var(--ink);background:var(--chip);border:2px solid var(--line);border-radius:16px;padding:14px 16px}
+textarea{min-height:120px;resize:vertical}
+textarea:focus,input:focus,select:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.btn{border:0;border-radius:16px;font:700 1.1em Poppins,sans-serif;padding:12px 26px;min-height:56px;cursor:pointer;background:var(--acc);color:var(--accInk);display:inline-flex;gap:8px;align-items:center;text-decoration:none}
+.btn.go{flex:1 1 220px;justify-content:center;font-size:1.35em}
+.btn.ghost{background:var(--chip);color:var(--ink);font-size:1em;min-height:48px;padding:10px 18px}
+.btn.wa{background:#1fa855;color:#fff;font-size:1em;min-height:48px;padding:10px 18px}
+.btn svg{width:22px;height:22px}
+.ex{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ex span{font-size:.9em;color:var(--soft);width:100%}
+.ex button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font:500 .92em Poppins,sans-serif;cursor:pointer;min-height:44px}
+.result{position:relative;overflow:hidden}
+.result.F{background:var(--fbg)}.result.T{background:var(--tbg)}.result.U{background:var(--ubg)}
+.bubble{background:var(--card);border-radius:16px 16px 16px 4px;padding:12px 16px;margin:6px 0 16px;border:1px solid var(--line);max-width:92%;overflow-wrap:anywhere}
+.bubble small{display:block;color:var(--soft);font-size:.8em}
+.stamp{display:inline-block;font:800 clamp(34px,8vw,52px)/1 Poppins,sans-serif;padding:8px 22px 4px;border:5px solid currentColor;border-radius:14px;transform:rotate(-6deg);letter-spacing:.02em;margin:4px 0 10px;animation:press .35s ease-out}
+@keyframes press{from{transform:rotate(-6deg) scale(1.6);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.stamp{animation:none}}
+.F .stamp{color:var(--f)}.T .stamp{color:var(--t)}.U .stamp{color:var(--u)}
+.matched{font-family:Poppins;font-weight:700;font-size:1.2em;line-height:1.3;margin:4px 0 8px}
+.why{font-size:1.08em;margin:0 0 12px}
+.kw{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.9em;color:var(--soft);margin-bottom:12px}
+.kw b{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:2px 10px;font-weight:600}
+.src{margin:0 0 14px;padding:0;list-style:none}
+.src li{display:flex;gap:8px;align-items:flex-start;margin:4px 0}
+.src li svg{flex:none;width:20px;height:20px;margin-top:3px;color:var(--t)}
+.doctor{display:flex;gap:10px;align-items:center;background:var(--card);border-radius:14px;padding:12px 14px;font-weight:600;border:2px dashed var(--line)}
+.doctor svg{flex:none;width:30px;height:30px;color:#0f4c5c}
+.steps{margin:6px 0 14px;padding-left:1.3em}.steps li{margin:6px 0}
+.rel{display:grid;gap:8px;margin:8px 0 14px}
+.rel button{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font:inherit;color:var(--ink);cursor:pointer;min-height:44px}
+.pill{display:inline-block;font:700 .75em Poppins;border-radius:6px;padding:1px 8px;color:#fff;vertical-align:middle;white-space:nowrap}
+.pill.FALSE{background:var(--f)}.pill.TRUE{background:var(--t)}.pill.UNVERIFIED{background:var(--u)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.stat{background:var(--chip);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font:800 clamp(24px,5vw,34px)/1.1 Poppins}
+.stat span{font-size:.8em;color:var(--soft)}
+.list{display:grid;gap:10px;margin-top:12px}
+.myth{border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.myth h3{font-size:1.05em;margin:4px 0}
+.myth p{margin:4px 0;font-size:.95em}
+.myth .meta{font-size:.82em;color:var(--soft)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.filters button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:600 .9em Poppins;cursor:pointer;min-height:40px}
+.filters button.on{background:#0f4c5c;color:#fff;border-color:#0f4c5c}
+table{width:100%;border-collapse:collapse;font-size:.92em;margin-top:10px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{text-align:right;white-space:nowrap}
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.flow div{background:var(--chip);border-radius:16px;padding:14px}
+.flow b{font:800 1.3em Poppins;color:#0f4c5c;display:block}
+:root[data-theme=dark] .flow b{color:var(--acc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .flow b{color:var(--acc)}}
+footer{color:#d8eef1;font-size:.88em;text-align:center;padding:10px 0 30px}
+.hide{display:none!important}
+.note{font-size:.88em;color:var(--soft)}
+@media(max-width:600px){.flow,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.tool{margin-left:0}
+ table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:7em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:6.5em;margin-inline-start:-7em;color:var(--soft)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="brand">
+  <svg class="logo" viewBox="0 0 52 52" aria-hidden="true"><rect x="3" y="6" width="40" height="32" rx="10" fill="#fff"/><path d="M12 38l-4 9 12-9z" fill="#fff"/><circle cx="36" cy="34" r="13" fill="#f59e0b"/><path d="M30 34l4.5 4.5L43 29" stroke="#3b2300" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="14" width="20" height="4" rx="2" fill="#0f4c5c"/><rect x="10" y="22" width="14" height="4" rx="2" fill="#0f4c5c" opacity=".5"/></svg>
+  <div><h1>Sach<span>Check</span></h1><p class="tag">Got a health message on WhatsApp? Check before you share. <span lang="hi">सच जानो, फिर भेजो।</span></p></div>
+ </div>
+ <nav aria-label="Sections">
+  <a href="#check" data-v="check">Check a message</a>
+  <a href="#myths" data-v="myths">All myths</a>
+  <a href="#test" data-v="test">Test mode</a>
+  <a href="#how" data-v="how">How it works</a>
+  <span class="tool"><button id="bigBtn" aria-pressed="false" title="Bigger text">A+ Big text</button></span>
+ </nav>
+</header>
+
+<main>
+<!-- CHECK -->
+<section id="v-check">
+ <div class="card">
+  <label class="big" for="q">Type or paste the health message</label>
+  <textarea id="q" placeholder="Example: Nimbu pani se corona theek ho jata hai"></textarea>
+  <div class="row">
+   <button class="btn go" id="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>Check it</button>
+  </div>
+  <div class="ex"><span>Or tap an example:</span></div>
+ </div>
+ <div id="out"></div>
+</section>
+
+<!-- MYTHS -->
+<section id="v-myths" class="hide">
+ <div class="card">
+  <h2>Our checked myth database</h2>
+  <p class="note" id="dbsum"></p>
+  <input id="filt" placeholder="Search: haldi, dengue, vaccine…" aria-label="Search myths">
+  <div class="filters" id="cats"></div>
+  <div class="list" id="mlist"></div>
+ </div>
+</section>
+
+<!-- TEST -->
+<section id="v-test" class="hide">
+ <div class="card">
+  <h2>Test mode: how accurate is SachCheck?</h2>
+  <p class="note">Ask a friend or family member to type a health claim in their own words. Check the answer together, then mark it right or wrong. No names or phone numbers are saved.</p>
+  <div class="row">
+   <select id="tester" aria-label="Tester number" style="flex:0 1 160px"></select>
+   <input id="tq" placeholder="Tester types a claim here" style="flex:1 1 260px" aria-label="Test claim">
+   <button class="btn ghost" id="tgo">Run</button>
+  </div>
+  <div id="tres" class="note" style="margin-top:10px"></div>
+  <div class="row hide" id="tmark">
+   <button class="btn wa" id="tok">Tool was right</button>
+   <button class="btn ghost" id="tbad" style="background:var(--f);color:#fff">Tool was wrong</button>
+  </div>
+  <div class="stats">
+   <div class="stat"><b id="sTot">0</b><span>claims tested</span></div>
+   <div class="stat"><b id="sOk">0</b><span>correct</span></div>
+   <div class="stat"><b id="sPeople">0</b><span>testers</span></div>
+   <div class="stat"><b id="sAcc">–</b><span>accuracy</span></div>
+  </div>
+  <p class="note" id="formula">Accuracy = correct ÷ total × 100</p>
+  <div class="row"><button class="btn ghost" id="tcopy">Copy results</button><button class="btn ghost" id="tclear">Start new test</button><span class="note" id="tmsg"></span></div>
+  <div class="scroll"><table class="stack"><thead><tr><th>#</th><th>Tester</th><th>Claim typed</th><th>Tool said</th><th>Right?</th></tr></thead><tbody id="tlog"></tbody></table></div>
+ </div>
+</section>
+
+<!-- HOW -->
+<section id="v-how" class="hide">
+ <div class="card">
+  <h2>How SachCheck works</h2>
+  <div class="flow">
+   <div><b>1 · TYPE</b>You type or paste a message, in English, Hinglish or some Hindi words.</div>
+   <div><b>2 · MATCH</b>SachCheck pulls out the keywords and looks for a myth where <em>every</em> key idea matches (like "lemon" + "corona").</div>
+   <div><b>3 · ANSWER</b>It shows TRUE, FALSE or UNVERIFIED, a short reason, 2 reliable sources and "Always ask a doctor".</div>
+  </div>
+  <h3 style="margin-top:14px">Smart matching</h3>
+  <ul>
+   <li><strong>Word families:</strong> each idea has many words. "Corona", "covid-19", "कोरोना" all mean COVID. "Haldi" = turmeric, "nimbu" = lemon, "tika/jab" = vaccine.</li>
+   <li><strong>Spelling slips are OK:</strong> "vaccinatoin" or "dengu" still match (one or two letters wrong in longer words).</li>
+   <li><strong>All ideas must match:</strong> "lemon cures cancer" does <em>not</em> match "lemon cures COVID", so we never answer the wrong question.</li>
+   <li><strong>Best match wins:</strong> if two myths match, extra helper words decide (e.g. "lemon water" picks the lemon myth, not the hot-water myth).</li>
+   <li><strong>Stop words:</strong> words like "sanitizer" stop the "drinking alcohol" myth from being picked by mistake.</li>
+  </ul>
+  <h3 style="margin-top:14px">When nothing matches</h3>
+  <p>SachCheck never guesses. It says <strong>UNVERIFIED – not checked yet</strong>, asks you not to forward the message, shows close checked myths, and tells you where to check: PIB Fact Check or a doctor.</p>
+  <h3 style="margin-top:14px">How we check our facts</h3>
+  <p>Every verdict is checked with at least 2 reliable sources (WHO, Ministry of Health &amp; Family Welfare, PIB Fact Check, UNICEF and others). If sources don't agree, or proof is missing, we mark it UNVERIFIED.</p>
+ </div>
+</section>
+</main>
+<footer>SachCheck does not give medical advice. Always ask a doctor.<br>Made by Team_60_0004 · Grade 6 · HCL Jigsaw Edition 7 · Health Myth Buster</footer>
+</div>
+
+<script>
+/* SachCheck engine: myth database + keyword matcher (works in browser and Node) */
+const SOURCES = {
+  WHO:   { n: "World Health Organization (WHO)", u: "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters" },
+  WHOg:  { n: "World Health Organization (WHO)", u: "https://www.who.int/news-room/fact-sheets" },
+  MOHFW: { n: "Ministry of Health & Family Welfare (MoHFW)", u: "https://www.mohfw.gov.in" },
+  PIB:   { n: "PIB Fact Check", u: "https://factcheck.pib.gov.in" },
+  UNICEF:{ n: "UNICEF India", u: "https://www.unicef.org/india" },
+  ICMR:  { n: "Indian Council of Medical Research (ICMR)", u: "https://www.icmr.gov.in" },
+  NCVBDC:{ n: "National Centre for Vector Borne Diseases Control", u: "https://ncvbdc.mohfw.gov.in" },
+  NACO:  { n: "National AIDS Control Organisation (NACO)", u: "https://naco.gov.in" },
+  NTEP:  { n: "National TB Elimination Programme (MoHFW)", u: "https://tbcindia.mohfw.gov.in" },
+  NHS:   { n: "NHS (UK National Health Service)", u: "https://www.nhs.uk" },
+  CDC:   { n: "CDC (US Centers for Disease Control)", u: "https://www.cdc.gov" },
+  AAO:   { n: "American Academy of Ophthalmology", u: "https://www.aao.org/eye-health" },
+  NCI:   { n: "National Cancer Institute (NCI)", u: "https://www.cancer.gov" },
+  CRUK:  { n: "Cancer Research UK", u: "https://www.cancerresearchuk.org" },
+  FDA:   { n: "US Food & Drug Administration (FDA)", u: "https://www.fda.gov" },
+  FSSAI: { n: "Food Safety & Standards Authority of India (FSSAI)", u: "https://www.fssai.gov.in" },
+  NDMA:  { n: "National Disaster Management Authority (NDMA)", u: "https://ndma.gov.in" },
+  NIH:   { n: "NIH Office of Dietary Supplements", u: "https://ods.od.nih.gov" }
+};
+
+/* Concept word-families: spelling variants, Hinglish and Hindi words */
+const C = {
+  covid: ["covid","corona","coronavirus","covid19","coronavirous","कोरोना","कोविड"],
+  vaccine: ["vaccine","vaccines","vaccination","vaccinated","vaccinate","jab","tika","teeka","tikka","covishield","covaxin","टीका","वैक्सीन"],
+  cancer: ["cancer","tumour","tumor","कैंसर"],
+  cold: ["cold","flu","sardi","zukam","jukam","cough","khansi","सर्दी","जुकाम","खांसी"],
+  diarrhoea: ["diarrhoea","diarrhea","diarhea","diarrohea","loose","motion","motions","dast","दस्त"],
+  diabetes: ["diabetes","diabetic","madhumeh","sugar","मधुमेह","शुगर"],
+  eye: ["eye","eyes","eyesight","vision","sight","glasses","spectacles","specs","chashma","आंख","आँख"]
+};
+
+/* k = keyword groups (each group = one idea; ALL groups must be found). b = bonus words for tie-breaks. */
+const DB = [
+ {id:1, cat:"COVID-19", claim:"Lemon juice or hot lemon water cures COVID-19", v:"FALSE",
+  k:[["lemon","nimbu","neembu","lime","citrus","नींबू"],C.covid], b:["juice","water","cure","cured","cures","drink","drinking","warm","hot","garam"],
+  r:"Lemon has vitamin C and is healthy, but it cannot kill or cure the coronavirus. No home drink cures COVID-19.", s:["WHO","PIB"]},
+ {id:2, cat:"COVID-19", claim:"Eating garlic prevents COVID-19", v:"FALSE",
+  k:[["garlic","lehsun","lahsun","lasun","लहसुन"],C.covid],
+  r:"Garlic is a healthy food, but there is no proof that it protects anyone from COVID-19.", s:["WHO","MOHFW"]},
+ {id:3, cat:"COVID-19", claim:"Drinking hot water or taking steam kills the coronavirus", v:"FALSE",
+  k:[["hot","warm","garam","steam","bhap","bhaap","boiling","गरम","भाप"],[...C.covid,"virus"]], b:["water","pani","drink","steam","gargle"],
+  r:"Warm water and steam can feel soothing, but they do not kill the virus inside your body. Very hot steam can even burn your face.", s:["WHO","PIB"]},
+ {id:4, cat:"COVID-19", claim:"Haldi (turmeric) milk cures COVID-19", v:"FALSE",
+  k:[["turmeric","haldi","curcumin","हल्दी"],C.covid], b:["milk","doodh"],
+  r:"Turmeric milk is a comforting drink, but no food or drink has been proven to cure COVID-19. Follow your doctor's treatment.", s:["WHO","PIB"]},
+ {id:5, cat:"COVID-19", claim:"5G mobile towers spread COVID-19", v:"FALSE",
+  k:[["5g","tower","towers","network","radiation"],C.covid],
+  r:"Viruses cannot travel on radio waves or mobile networks. COVID-19 also spread in many places that have no 5G at all.", s:["WHO","PIB"]},
+ {id:6, cat:"COVID-19", claim:"Hot sun or high temperature kills the coronavirus", v:"FALSE",
+  k:[["sun","sunlight","sunny","summer","heat","temperature","garmi","weather","dhoop","degree","degrees","धूप","गर्मी"],[...C.covid,"virus"]], b:["weather","sun","degree","summer"],
+  r:"You can catch COVID-19 in any weather, even in hot and sunny places. Sitting in strong sun can give you sunburn or heatstroke.", s:["WHO","MOHFW"]},
+ {id:7, cat:"COVID-19", claim:"Drinking alcohol protects you from COVID-19", v:"FALSE",
+  k:[["alcohol","daru","daaru","sharab","liquor","whisky","beer","wine","rum","शराब"],C.covid], b:["drink","drinking","protect"], x:["sanitizer","sanitiser","sanitizers","sanitisers","hand","hands"],
+  r:"Drinking alcohol does not protect against COVID-19 and it harms your health. Never drink sanitiser or any cleaning alcohol.", s:["WHO","MOHFW"]},
+ {id:8, cat:"Medicines", claim:"Antibiotics cure viral illnesses like cold, flu and COVID-19", v:"FALSE",
+  k:[["antibiotic","antibiotics","amoxicillin","azithromycin","azithral","एंटीबायोटिक"],[...C.cold,...C.covid,"viral","fever","bukhar"]],
+  r:"Antibiotics only work on bacteria, not on viruses. Taking them when you don't need them can make them stop working when you really do.", s:["WHOg","ICMR"]},
+ {id:9, cat:"Vaccines", claim:"Vaccines have a microchip inside to track people", v:"FALSE",
+  k:[["chip","microchip","tracking","track","tracker","magnet","magnetic","5g"],C.vaccine],
+  r:"Vaccines contain ingredients that train your body to fight germs. There is no chip, magnet or tracker in any vaccine.", s:["WHO","PIB"]},
+ {id:10, cat:"Vaccines", claim:"Vaccines like COVID-19 shots or polio drops cause infertility", v:"FALSE",
+  k:[["infertility","infertile","impotent","impotency","napunsak","sterile","sterility","barren","बांझ"],[...C.vaccine,"polio","drops","drop"]],
+  r:"Millions of people who got vaccines, including polio drops as babies, have gone on to have healthy children. Vaccines do not cause infertility.", s:["WHOg","UNICEF"]},
+ {id:11, cat:"Vaccines", claim:"Vaccines cause autism", v:"FALSE",
+  k:[["autism","autistic","ऑटिज्म"],[...C.vaccine,"mmr","measles"]],
+  r:"Many large studies of millions of children found no link between vaccines and autism. Vaccines are safe and save lives.", s:["WHOg","CDC"]},
+ {id:12, cat:"COVID-19", claim:"Wearing a mask lowers your oxygen or causes CO2 poisoning", v:"FALSE",
+  k:[["mask","masks","maskes","मास्क"],["oxygen","co2","carbon","dioxide","suffocate","suffocation","breathe","breathing","poison","poisoning","ऑक्सीजन"]],
+  r:"Air passes easily through a properly worn mask. Doctors wear masks for many hours during operations. A mask does not lower your oxygen.", s:["WHO","PIB"]},
+ {id:13, cat:"COVID-19", claim:"If you can hold your breath for 10 seconds, you don't have COVID-19", v:"FALSE",
+  k:[["hold","holding","breath"],["second","seconds","10","ten","test","covid"]],
+  r:"Holding your breath is not a test for COVID-19. Only a proper lab test (like RT-PCR) can tell if you have it.", s:["WHO","MOHFW"]},
+ {id:14, cat:"COVID-19", claim:"Spraying or drinking bleach, chlorine or disinfectant kills the virus in your body", v:"FALSE",
+  k:[["spray","spraying","bleach","chlorine","disinfectant","phenyl","dettol","harpic"],[...C.covid,"virus","germ","germs","body"]], b:["body","skin","drink"],
+  r:"Never spray or drink bleach, chlorine or disinfectant. They can badly hurt your skin, eyes and insides. Use them only to clean surfaces.", s:["WHO","MOHFW"]},
+ {id:15, cat:"COVID-19", claim:"Adding black pepper or chillies to food prevents COVID-19", v:"FALSE",
+  k:[["pepper","kali","mirch","mirchi","chilli","chili","काली","मिर्च"],C.covid],
+  r:"Pepper can make food tasty, but it does not prevent or cure COVID-19.", s:["WHO","PIB"]},
+ {id:16, cat:"COVID-19", claim:"Kadha or herbal home drinks cure COVID-19", v:"FALSE",
+  k:[["kadha","kada","kaadha","herbal","decoction","ayurvedic","giloy","tulsi","remedy","gharelu","काढ़ा","तुलसी"],C.covid],
+  r:"Some herbal drinks may feel good, but none has been proven to cure COVID-19. Never skip medical treatment for a home drink.", s:["WHO","PIB"]},
+ {id:17, cat:"Hygiene", claim:"Washing hands with soap for 20 seconds stops many infections", v:"TRUE",
+  k:[["wash","washing","soap","handwash","handwashing","sabun","साबुन"],["hand","hands","germ","germs","infection","infections","disease","sick","20","illness"]],
+  r:"Yes! Washing hands with soap and water for at least 20 seconds removes germs and stops diarrhoea, flu and many other infections.", s:["WHOg","UNICEF"]},
+ {id:18, cat:"Hygiene", claim:"Hand sanitiser with at least 60% alcohol kills most germs when soap isn't available", v:"TRUE",
+  k:[["sanitiser","sanitizer","sanitizers","sanitisers","सैनिटाइजर"],["germ","germs","kill","kills","virus","clean","hand","hands",...C.covid]],
+  r:"Yes. Soap and water is best, but a sanitiser with at least 60% alcohol kills most germs on your hands. Keep it away from fire and small children.", s:["WHOg","CDC"]},
+ {id:19, cat:"Vaccines", claim:"Polio drops are safe and every child under 5 should get them", v:"TRUE",
+  k:[["polio","पोलियो"],["safe","give","should","every","needed","need","protect","protects","again","campaign","drop","drops","good"]],
+  r:"Yes. Polio drops are safe and protect children from a disease that can cause lifelong paralysis. India became polio-free thanks to them.", s:["WHOg","UNICEF"]},
+ {id:20, cat:"Vaccines", claim:"The MR (measles-rubella) vaccine protects children", v:"TRUE",
+  k:[["measles","rubella","mr","khasra","khasraa","खसरा"],["protect","protects","safe","prevent","prevents","stop","good","needed","should"]], b:["vaccine","injection"],
+  r:"Yes. The MR vaccine is safe and protects children from measles and rubella, which can cause serious illness. It's free under India's immunisation programme.", s:["WHOg","MOHFW"]},
+ {id:21, cat:"Dengue & Malaria", claim:"Papaya leaf juice cures dengue", v:"UNVERIFIED",
+  k:[["papaya","papita","पपीता"],["dengue","dengu","डेंगू"]],
+  r:"A few small studies looked at papaya leaf and platelets, but reliable health bodies do not call it a cure. There is no proven home cure for dengue: see a doctor, drink plenty of fluids and rest.", s:["NCVBDC","WHOg"]},
+ {id:22, cat:"Dengue & Malaria", claim:"Dengue mosquitoes bite mostly during the daytime", v:"TRUE",
+  k:[["dengue","dengu","aedes","डेंगू"],["day","daytime","morning","daylight","din","evening","afternoon"]],
+  r:"Yes. The Aedes mosquito that spreads dengue bites mostly in the day, especially early morning and late afternoon. Wear full sleeves and use repellent.", s:["WHOg","NCVBDC"]},
+ {id:23, cat:"Dengue & Malaria", claim:"Emptying coolers, pots and tyres every week helps stop dengue", v:"TRUE",
+  k:[["cooler","coolers","water","pot","pots","tyre","tyres","tire","stagnant","container","empty","emptying","flower","vase"],["dengue","dengu","mosquito","mosquitoes","machhar","machar","मच्छर","breed","breeding"]],
+  r:"Yes. Dengue mosquitoes lay eggs in clean standing water. Emptying and drying coolers, pots and old tyres once a week breaks their life cycle.", s:["NCVBDC","WHOg"]},
+ {id:24, cat:"Dengue & Malaria", claim:"Malaria spreads by touching or hugging a sick person", v:"FALSE",
+  k:[["malaria","मलेरिया"],["touch","touching","contact","hug","hugging","shake","sharing","share","air","sneeze","cough"]],
+  r:"Malaria only spreads through the bite of an infected mosquito, not by touching or being near a sick person. Use bed nets and see a doctor for fever.", s:["WHOg","NCVBDC"]},
+ {id:25, cat:"TB, HIV & Leprosy", claim:"TB (tuberculosis) cannot be cured", v:"FALSE",
+  k:[["tb","tuberculosis","kshay","kshayrog","टीबी"],["cure","cured","curable","incurable","treatment","treat","die","death","medicine"]],
+  r:"TB can be cured when the full course of medicine is taken. Testing and treatment are free at government health centres in India.", s:["WHOg","NTEP"]},
+ {id:26, cat:"TB, HIV & Leprosy", claim:"HIV spreads by hugging, shaking hands or sharing food", v:"FALSE",
+  k:[["hiv","aids","एड्स"],["hug","hugging","touch","touching","hand","hands","share","sharing","food","eat","eating","plate","utensil","mosquito","toilet","swim","swimming","kiss","sit"]],
+  r:"HIV does not spread through hugging, touching, sharing food, toilets or mosquito bites. Treat people living with HIV with kindness.", s:["WHOg","NACO"]},
+ {id:27, cat:"Diabetes & Heart", claim:"Diabetes is contagious and spreads from person to person", v:"FALSE",
+  k:[["diabetes","diabetic","madhumeh","मधुमेह"],["contagious","spread","spreads","catch","infectious","infect","touch","touching"]],
+  r:"Diabetes is not an infection, so you cannot catch it from someone. It depends on genes, body weight, food and exercise.", s:["WHOg","CDC"]},
+ {id:28, cat:"Diabetes & Heart", claim:"Karela (bitter gourd) juice cures diabetes, so you can stop your medicines", v:"FALSE",
+  k:[["karela","karella","bitter","gourd","methi","jamun","fenugreek","करेला"],C.diabetes],
+  r:"No food can cure diabetes. Healthy food helps, but never stop diabetes medicine without your doctor's advice. That can be dangerous.", s:["WHOg","ICMR"]},
+ {id:29, cat:"Diabetes & Heart", claim:"Eating sweets is the only cause of diabetes", v:"FALSE",
+  k:[["sweet","sweets","mithai","chocolate","chocolates","candy","sugar","cheeni","मिठाई"],["diabetes","diabetic","madhumeh","मधुमेह"]],
+  r:"Diabetes has many causes: genes, extra body weight and too little exercise. Type 1 diabetes is not caused by sweets. Too much sugar can raise the risk of type 2 by causing weight gain, so keep sweets small.", s:["WHOg","CDC"]},
+ {id:30, cat:"Eyes", claim:"Reading in dim light damages your eyes forever", v:"FALSE",
+  k:[["dim","dark","low","poor","darkness","andhera"],["light","read","reading","book","books",...C.eye]],
+  r:"Reading in dim light can make your eyes tired for a while, but it does not cause permanent damage. Good light just makes reading more comfortable.", s:["AAO","NHS"]},
+ {id:31, cat:"Eyes", claim:"Eating carrots means you will never need glasses", v:"FALSE",
+  k:[["carrot","carrots","gajar","गाजर"],C.eye],
+  r:"Carrots have vitamin A, which keeps eyes healthy, but eating more of them will not fix poor eyesight or replace glasses.", s:["AAO","NHS"]},
+ {id:32, cat:"Eyes", claim:"Sitting close to the TV damages your eyes", v:"FALSE",
+  k:[["tv","television","screen","टीवी"],["close","near","sitting","sit","paas"]], b:[...C.eye,"damage"],
+  r:"Sitting close may tire your eyes, but it does not damage them. Take breaks: every 20 minutes, look at something far away for 20 seconds.", s:["AAO","NHS"]},
+ {id:33, cat:"Food beliefs", claim:"Eating curd (dahi) at night gives you a cold", v:"FALSE",
+  k:[["curd","dahi","yogurt","yoghurt","raita","दही"],[...C.cold,"night","raat"]],
+  r:"Colds are caused by viruses that pass from person to person, not by curd. Curd is a healthy food for most people at any time of day.", s:["NHS","CDC"]},
+ {id:34, cat:"Food beliefs", claim:"Ice cream or cold drinks always cause a cough or cold", v:"FALSE",
+  k:[["ice","icecream","kulfi","chilled","thanda","fridge","colddrink","आइसक्रीम"],[...C.cold,"throat","sore"]],
+  r:"Colds and coughs are caused by viruses, not by cold food. If cold food bothers a sore throat, you can skip it, but it doesn't make you catch a cold.", s:["NHS","CDC"]},
+ {id:35, cat:"Food beliefs", claim:"Going out with wet hair or in cold weather gives you a cold", v:"FALSE",
+  k:[["wet","hair","rain","baarish","barish","winter","weather","bath","bathing","bathe","thand"],[...C.cold,"sick","fever"]],
+  r:"Colds are caused by viruses that spread between people. Feeling chilly is uncomfortable, but it does not give you a cold by itself.", s:["NHS","CDC"]},
+ {id:36, cat:"Food beliefs", claim:"Honey and lemon in hot water cures the flu in one day", v:"FALSE",
+  k:[["honey","shahad","shahed","शहद","lemon","nimbu"],[...C.cold,"influenza","fever"]],
+  r:"Honey can soothe a sore throat (but never give honey to babies under 1 year), yet it does not kill the flu virus. Rest, fluids and time help you recover.", s:["NHS","WHOg"]},
+ {id:37, cat:"Cancer", claim:"Food cooked in a microwave causes cancer", v:"FALSE",
+  k:[["microwave","microwaved","oven"],[...C.cancer,"radiation","radioactive","poison","unsafe"]],
+  r:"Microwaves heat food by making water in it vibrate. They do not make food radioactive or cancer-causing. Use microwave-safe containers.", s:["WHOg","FDA"]},
+ {id:38, cat:"Cancer", claim:"Mobile phones cause brain cancer", v:"UNVERIFIED",
+  k:[["phone","phones","mobile","cellphone","smartphone","radiation","फोन","मोबाइल"],C.cancer],
+  r:"WHO's cancer agency lists phone radio waves as only 'possibly' linked to cancer, and studies have NOT proven that phones cause it. Scientists are still studying it. Using earphones or speaker mode is a simple precaution.", s:["WHOg","NCI"]},
+ {id:39, cat:"Cancer", claim:"Turmeric (haldi) cures cancer", v:"FALSE",
+  k:[["turmeric","haldi","curcumin","हल्दी"],C.cancer],
+  r:"Scientists are studying turmeric, but there is no proof that it cures cancer. Cancer needs treatment from doctors. Never stop treatment for a home remedy.", s:["NCI","CRUK"]},
+ {id:40, cat:"Diabetes & Heart", claim:"Regular exercise lowers the risk of heart disease", v:"TRUE",
+  k:[["exercise","exercising","walk","walking","yoga","sport","sports","physical","active","cycling","running","vyayam"],["heart","bp","pressure","hypertension","dil"]],
+  r:"Yes. Being active for about 30 minutes a day helps keep your heart, blood pressure and weight healthy.", s:["WHOg","MOHFW"]},
+ {id:41, cat:"Cancer", claim:"Smoking and chewing tobacco cause cancer", v:"TRUE",
+  k:[["smoking","smoke","cigarette","cigarettes","bidi","beedi","tobacco","gutka","gutkha","khaini","zarda","तंबाकू","गुटखा"],[...C.cancer,"mouth","lung","lungs"]],
+  r:"Yes. Smoking and chewing tobacco (gutka, khaini) are leading causes of mouth, throat and lung cancer. Free quit help: national quitline 1800-11-2356.", s:["WHOg","MOHFW"]},
+ {id:42, cat:"Cancer", claim:"Hookah or vaping is safe compared to cigarettes", v:"FALSE",
+  k:[["hookah","huqqa","sheesha","shisha","vape","vaping","ecigarette","hukka"],["safe","safer","harmless","healthy","better","ok","okay","fine"]],
+  r:"Hookah smoke and vapes still contain harmful and addictive substances. A hookah session can expose you to as much smoke as many cigarettes.", s:["WHOg","MOHFW"]},
+ {id:43, cat:"Mother & Baby", claim:"The first yellow milk (colostrum) after birth is bad and should be thrown away", v:"FALSE",
+  k:[["colostrum","yellow","first","pehla","peela","khees"],["milk","doodh","breastfeed","breastfeeding","breast","दूध"]],
+  r:"The first yellow milk, colostrum, is full of goodness that protects the baby from infections. Start breastfeeding within 1 hour of birth.", s:["WHOg","UNICEF"]},
+ {id:44, cat:"Mother & Baby", claim:"Newborn babies should be given honey, ghutti or water right after birth", v:"FALSE",
+  k:[["ghutti","janam","honey","shahad","water","pani","gripe","sugar"],["newborn","new-born","baby","babies","birth","infant","born"]],
+  r:"For the first 6 months, a baby needs only mother's milk: no honey, ghutti or even water. Honey can make babies under 1 seriously ill.", s:["WHOg","UNICEF"]},
+ {id:45, cat:"Mother & Baby", claim:"Babies should get only breast milk for the first 6 months", v:"TRUE",
+  k:[["breastfeed","breastfeeding","breast","mother","maa","mothers"],["6","six","month","months","only","exclusive","exclusively"]],
+  r:"Yes. Only breast milk for the first 6 months gives babies everything they need and protects them from infections.", s:["WHOg","UNICEF"]},
+ {id:46, cat:"Diarrhoea", claim:"ORS helps a child with diarrhoea", v:"TRUE",
+  k:[["ors","electral","oral","rehydration","ओआरएस"],[...C.diarrhoea,"dehydration","vomit","vomiting"]],
+  r:"Yes. ORS replaces the water and salts the body loses. Give ORS plus zinc tablets for 14 days, and keep feeding the child.", s:["WHOg","UNICEF"]},
+ {id:47, cat:"Diarrhoea", claim:"Stop giving water and food to a child with diarrhoea", v:"FALSE",
+  k:[["stop","dont","don't","no","avoid","not","without","nahi","band","withhold"],["water","fluid","fluids","food","feed","feeding","drink","khana","pani","milk"],C.diarrhoea],
+  r:"A child with diarrhoea needs MORE fluids: ORS, water, and normal food and breast milk. See a doctor quickly if the child is very weak or has blood in stools.", s:["WHOg","UNICEF"]},
+ {id:48, cat:"First aid", claim:"After a snake bite, cut the wound, suck out the poison or tie a tight band", v:"FALSE",
+  k:[["snake","saanp","sanp","snakebite","सांप"],["suck","sucking","cut","tie","tying","tourniquet","band","rope","herb","herbs","ojha","tantrik","jhaad","poison","venom"]],
+  r:"Do NOT cut, suck or tie tightly. Keep the person calm and still, remove rings or tight things, and rush to the nearest hospital for anti-snake venom.", s:["WHOg","MOHFW"]},
+ {id:49, cat:"First aid", claim:"Putting toothpaste, ghee or ice on a burn helps it heal", v:"FALSE",
+  k:[["toothpaste","ghee","butter","ice","oil","paste","colgate","haldi","turmeric"],["burn","burns","burnt","burned","jala","jalna"]],
+  r:"Cool the burn under clean running water for about 20 minutes. Don't put toothpaste, ghee, oil or ice on it: they can trap heat or cause infection.", s:["WHOg","NHS"]},
+ {id:50, cat:"First aid", claim:"Making a person smell a shoe or onion stops an epilepsy fit", v:"FALSE",
+  k:[["shoe","shoes","joota","juta","chappal","onion","pyaz","pyaaz","smell","spoon","key","keys","जूता","प्याज"],["fit","fits","seizure","seizures","epilepsy","mirgi","मिर्गी"]],
+  r:"Smelling things does not stop a seizure. Lay the person on their side, keep hard objects away, put nothing in their mouth, and call for help if it lasts over 5 minutes.", s:["WHOg","NHS"]},
+ {id:51, cat:"First aid", claim:"Epilepsy is contagious or caused by evil spirits", v:"FALSE",
+  k:[["epilepsy","seizure","seizures","fit","fits","mirgi","मिर्गी"],["contagious","spread","catch","ghost","spirit","spirits","curse","bhoot","evil","touch","saya","black","magic"]],
+  r:"Epilepsy is a brain condition. It is not contagious and has nothing to do with spirits or curses. Most people with epilepsy live normal lives with medicine.", s:["WHOg","CDC"]},
+ {id:52, cat:"Summer", claim:"Keeping an onion in your pocket prevents heatstroke", v:"UNVERIFIED",
+  k:[["onion","pyaz","pyaaz","kanda","प्याज"],["heat","heatstroke","loo","sun","summer","garmi","sunstroke","lu","गर्मी","लू"]],
+  r:"We found no reliable proof that this works. What really helps in a heatwave: drink plenty of water, stay in the shade, wear light cotton clothes, and avoid the afternoon sun.", s:["MOHFW","NDMA"]},
+ {id:53, cat:"First aid", claim:"A dog bite needs 14 painful injections in the stomach", v:"FALSE",
+  k:[["rabies","dog","dogs","kutta","kutte","कुत्ता"],["14","fourteen","stomach","pet","navel","belly","naabhi"]],
+  r:"That's an old method. Today, rabies vaccine is given in the arm in just a few doses. Wash the bite with soap and water for 15 minutes and go to a hospital the same day.", s:["WHOg","MOHFW"]},
+ {id:54, cat:"Food beliefs", claim:"Iodised salt helps prevent goitre and thyroid problems", v:"TRUE",
+  k:[["iodine","iodised","iodized","iodine"],["salt","namak","goitre","goiter","thyroid","नमक"]],
+  r:"Yes. Iodine in salt helps the thyroid gland work properly and prevents goitre. Use iodised salt at home.", s:["WHOg","MOHFW"]},
+ {id:55, cat:"Food beliefs", claim:"Eating properly cooked chicken or eggs gives you bird flu", v:"FALSE",
+  k:[["chicken","egg","eggs","poultry","murga","murgi","anda","ande","meat"],["bird","h5n1","avian","birdflu"]],
+  r:"Bird flu is killed by proper cooking. Well-cooked chicken and eggs are safe. Wash hands after handling raw chicken.", s:["WHOg","FSSAI"]},
+ {id:56, cat:"Food beliefs", claim:"Vitamin C tablets stop you from ever catching a cold", v:"FALSE",
+  k:[["vitamin","vitaminc","amla","orange","oranges","आंवला"],C.cold],
+  r:"Vitamin C is good for you, but it does not stop colds for most people. At most it may make a cold a little shorter.", s:["NHS","NIH"]},
+ {id:57, cat:"TB, HIV & Leprosy", claim:"Leprosy cannot be cured and spreads by touch", v:"FALSE",
+  k:[["leprosy","kushth","kusht","kodh","कुष्ठ"],["cure","cured","curable","incurable","touch","touching","spread","curse","contagious"]],
+  r:"Leprosy is fully curable with free medicine (MDT) from government centres, and it does not spread by casual touch.", s:["WHOg","MOHFW"]},
+ {id:59, cat:"Vaccines", claim:"Vaccines are safe and protect children from serious diseases", v:"TRUE",
+  k:[C.vaccine,["safe","safety","protect","protects","good","needed","important","necessary","zaroori"]],
+  r:"Yes. Vaccines are tested carefully before use and are checked all the time. They protect children from diseases like measles, polio and tetanus. Mild fever or a sore arm for a day is normal.", s:["WHOg","UNICEF"]},
+ {id:58, cat:"Mother & Baby", claim:"Iron tablets in pregnancy are safe and prevent anaemia", v:"TRUE",
+  k:[["iron","ifa","folic","आयरन"],["pregnancy","pregnant","anaemia","anemia","blood","garbh"]],
+  r:"Yes. Iron and folic acid tablets prevent anaemia and help the baby grow. They are given free at government health centres.", s:["WHOg","MOHFW"]}
+];
+
+function stem(w){
+  if(!/^[a-z0-9]+$/.test(w)) return w;
+  if(w.length>6 && w.endsWith("ing")) return w.slice(0,-3);
+  if(w.length>4 && w.endsWith("es") && !w.endsWith("ses")) return w.slice(0,-1).replace(/e$/,"");
+  if(w.length>3 && w.endsWith("s") && !w.endsWith("ss")) return w.slice(0,-1);
+  return w;
+}
+function lev(a,b,max){
+  if(Math.abs(a.length-b.length)>max) return max+1;
+  let prev=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+    const cur=[i]; let best=i;
+    for(let j=1;j<=b.length;j++){
+      cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+      if(cur[j]<best) best=cur[j];
+    }
+    if(best>max) return max+1;
+    prev=cur;
+  }
+  return prev[b.length];
+}
+function tokenize(text){
+  const raw=(text||"").toLowerCase().replace(/[’']/g,"").replace(/covid[\s-]*19/g,"covid").replace(/\b5\s*g\b/g,"5g")
+    .split(/[^\p{L}\p{M}\p{N}]+/u).filter(Boolean);
+  const toks=raw.map(stem);
+  const pairs=[];
+  for(let i=0;i<raw.length-1;i++) pairs.push({t:stem(raw[i]+raw[i+1]),parts:[toks[i],toks[i+1]]}); // "ice cream" -> "icecream"
+  return {toks,pairs};
+}
+/* does token t match keyword w? exact, or a small spelling slip for longer words */
+function wordMatch(t,w){
+  if(t===w) return 0;
+  const L=Math.min(t.length,w.length);
+  if(L<5 || !/^[a-z]+$/.test(t)) return -1;
+  const d=lev(t,w,L>=8?2:1);
+  return d<=(L>=8?2:1)?d:-1;
+}
+const PREP = DB.map(m=>({m, g:m.k.map(gr=>[...new Set(gr.map(x=>stem(x.toLowerCase())))]), b:(m.b||[]).map(x=>stem(x.toLowerCase())), x:(m.x||[]).map(x=>stem(x.toLowerCase()))}));
+
+function check(text){
+  const {toks,pairs}=tokenize(text);
+  const words=toks.concat(pairs.map(p=>p.t));
+  const partsOf=Object.fromEntries(pairs.map(p=>[p.t,p.parts]));
+  if(toks.length<2) return {status:"short"};
+  const results=[];
+  for(const p of PREP){
+    if(p.x.some(w=>toks.includes(w))) continue;
+    const used=new Set(); let found=0, fuzz=0; const hits=[];
+    for(const gr of p.g){
+      let hit=null;
+      for(const t of words){ if(used.has(t)) continue;
+        for(const w of gr){ const d=wordMatch(t,w); if(d>=0 && (hit===null || d<hit.d)) hit={t,w,d}; }
+        if(hit && hit.d===0) break;
+      }
+      if(hit){ used.add(hit.t); (partsOf[hit.t]||[]).forEach(q=>used.add(q)); if(pairs.some(pp=>pp.parts.includes(hit.t))) pairs.filter(pp=>pp.parts.includes(hit.t)).forEach(pp=>used.add(pp.t)); found++; fuzz+=hit.d; hits.push(hit.t); }
+    }
+    const bonus=p.b.filter(w=>words.includes(w)).length;
+    results.push({m:p.m, found, total:p.g.length, score:found/p.g.length*10 + bonus*0.5 - fuzz*0.3, hits});
+  }
+  results.sort((a,b)=>b.score-a.score);
+  const full=results.filter(r=>r.found===r.total);
+  if(full.length) return {status:"match", best:full[0], keywords:full[0].hits};
+  const GENERIC=new Set(["water","pani","cure","safe","good","hand","drink","food","milk","night","day","first","no","not","stop","dont","eat","give","should","every","only","close","sit","near","light","read","body","virus","hot","warm","low","dark","poor","need","needed","protect","spread","catch","touch","share","test","black","key","oil","paste","band","herb","cut","doctor","medicine","treatment","yellow","flower","pot","empty","back"].map(stem));
+  const related=results.filter(r=>r.found>0 && r.found/r.total>=0.5 && r.hits.some(h=>!GENERIC.has(h))).slice(0,3).map(r=>r.m);
+  return {status:"none", related};
+}
+
+
+</script>
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ICON_OK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>';
+const ICON_DOC='<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 4v8a6 6 0 0012 0V4"/><path d="M14 18v3a6 6 0 0012 0v-3"/><circle cx="26" cy="15" r="3"/></svg>';
+const LABEL={FALSE:"FALSE",TRUE:"TRUE",UNVERIFIED:"UNVERIFIED"};
+const CLS={FALSE:"F",TRUE:"T",UNVERIFIED:"U"};
+const SAY={FALSE:"This message is FALSE. Please don't forward it.",TRUE:"This message is TRUE.",UNVERIFIED:"This one is UNVERIFIED. There's no strong proof either way yet."};
+const EX=["Nimbu pani se corona theek ho jata hai","Does turmeric cure cancer?","Papaya leaf juice cures dengue","Give ORS for loose motions","Coconut water cures kidney stones"];
+let lastText="";
+
+/* examples */
+const exBox=document.querySelector(".ex");
+exBox.insertAdjacentHTML("beforeend",EX.map(e=>`<button type="button">${esc(e)}</button>`).join(""));
+exBox.addEventListener("click",e=>{if(e.target.tagName==="BUTTON"){$("#q").value=e.target.textContent;run();}});
+
+function srcList(m){return '<ul class="src">'+m.s.map(k=>`<li>${ICON_OK}<span><a href="${SOURCES[k].u}" target="_blank" rel="noopener">${esc(SOURCES[k].n)}</a></span></li>`).join("")+'</ul>';}
+const doctor=`<div class="doctor">${ICON_DOC}<span>SachCheck does not give medical advice. Always ask a doctor.</span></div>`;
+
+function card(m,q,kws){
+  const v=m.v;
+  lastText=`SachCheck: "${m.claim}" is ${v}. ${m.r} Sources: ${m.s.map(k=>SOURCES[k].n).join(", ")}. Always ask a doctor.`;
+  const share="https://wa.me/?text="+encodeURIComponent(`I checked this on SachCheck:\n"${m.claim}" → ${v}\n${m.r}\nSource: ${m.s.map(k=>SOURCES[k].n).join(", ")}\nAlways ask a doctor.\n${location.href.split('#')[0]}`);
+  return `<div class="card result ${CLS[v]}" aria-live="polite">
+   ${q?`<div class="bubble"><small>Message you checked</small>${esc(q)}</div>`:""}
+   <div class="stamp">${LABEL[v]}</div>
+   <p class="note" style="margin:0">${SAY[v]}</p>
+   <div class="matched">${esc(m.claim)}</div>
+   <p class="why"><strong>Why:</strong> ${esc(m.r)}</p>
+   ${kws&&kws.length?`<div class="kw">Keywords found: ${kws.map(k=>`<b>${esc(k)}</b>`).join("")}</div>`:""}
+   <strong>Checked with ${m.s.length} reliable sources:</strong>${srcList(m)}
+   ${doctor}
+   <div class="row"><button class="btn ghost" data-act="speak">Read aloud</button><a class="btn wa" href="${share}" target="_blank" rel="noopener">Share on WhatsApp</a><button class="btn ghost" data-act="again">Check another</button></div>
+  </div>`;
+}
+function noneCard(q,related){
+  lastText="This message is UNVERIFIED. It is not in our checked list yet. Please don't forward it. Check with PIB Fact Check or ask a doctor.";
+  return `<div class="card result U" aria-live="polite">
+   <div class="bubble"><small>Message you checked</small>${esc(q)}</div>
+   <div class="stamp">UNVERIFIED</div>
+   <div class="matched">Not checked yet</div>
+   <p class="why">This message is not in our list of ${DB.length} checked myths. <strong>We won't guess</strong>, because a guess could start a new myth.</p>
+   <strong>What you can do:</strong>
+   <ol class="steps">
+    <li>Don't forward it until it is checked.</li>
+    <li>Send it to <strong>PIB Fact Check</strong> on WhatsApp <strong>+91 87997 11259</strong> or visit <a href="https://factcheck.pib.gov.in" target="_blank" rel="noopener">factcheck.pib.gov.in</a>.</li>
+    <li>Look on <a href="https://www.who.int/news-room/fact-sheets" target="_blank" rel="noopener">WHO</a> or <a href="https://www.mohfw.gov.in" target="_blank" rel="noopener">MoHFW</a>, or ask a doctor.</li>
+   </ol>
+   ${related.length?`<strong>Did you mean one of these checked myths?</strong><div class="rel">${related.map(m=>`<button data-id="${m.id}"><span class="pill ${m.v}">${m.v}</span> ${esc(m.claim)}</button>`).join("")}</div>`:""}
+   ${doctor}
+   <div class="row"><button class="btn ghost" data-act="speak">Read aloud</button><button class="btn ghost" data-act="again">Check another</button></div>
+  </div>`;
+}
+function run(){
+  const q=$("#q").value.trim(); const out=$("#out");
+  if(!q){out.innerHTML=`<div class="card"><p class="why">Please type or paste a health message first.</p></div>`;return;}
+  const r=check(q);
+  if(r.status==="short") out.innerHTML=`<div class="card"><p class="why">Please type a little more, for example "Does turmeric cure cancer?"</p></div>`;
+  else if(r.status==="match") out.innerHTML=card(r.best.m,q,r.keywords);
+  else out.innerHTML=noneCard(q,r.related);
+  out.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+}
+$("#go").addEventListener("click",run);
+$("#q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();run();}});
+$("#out").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.id){const m=DB.find(x=>x.id==b.dataset.id);$("#out").innerHTML=card(m,"",[]);}
+  if(b.dataset.act==="again"){$("#q").value="";$("#out").innerHTML="";$("#q").focus();scrollTo({top:0});}
+  if(b.dataset.act==="speak"){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(lastText);u.lang="en-IN";u.rate=.9;speechSynthesis.speak(u);}catch(err){b.textContent="Read aloud not available";}}
+});
+
+/* big text */
+function setBig(on){document.body.classList.toggle("big",on);$("#bigBtn").setAttribute("aria-pressed",on);try{localStorage.setItem("sc_big",on?"1":"")}catch(e){}}
+$("#bigBtn").addEventListener("click",()=>setBig(!document.body.classList.contains("big")));
+try{if(localStorage.getItem("sc_big"))setBig(true)}catch(e){}
+
+/* myths list */
+const cats=["All",...new Set(DB.map(m=>m.cat))]; let cat="All";
+const cnt=v=>DB.filter(m=>m.v===v).length;
+$("#dbsum").textContent=`${DB.length} myths and facts: ${cnt("FALSE")} FALSE, ${cnt("TRUE")} TRUE, ${cnt("UNVERIFIED")} UNVERIFIED. Each one checked with 2 reliable sources.`;
+$("#cats").innerHTML=cats.map(c=>`<button data-c="${esc(c)}">${esc(c)}</button>`).join("");
+$("#cats").addEventListener("click",e=>{if(e.target.dataset.c){cat=e.target.dataset.c;drawList();}});
+$("#filt").addEventListener("input",drawList);
+function drawList(){
+  const f=$("#filt").value.toLowerCase().trim();
+  document.querySelectorAll("#cats button").forEach(b=>b.classList.toggle("on",b.dataset.c===cat));
+  const rows=DB.filter(m=>(cat==="All"||m.cat===cat)&&(!f||(m.claim+" "+m.k.flat().join(" ")+" "+m.r).toLowerCase().includes(f)));
+  $("#mlist").innerHTML=rows.map(m=>`<div class="myth"><span class="pill ${m.v}">${m.v}</span> <span class="meta">#${m.id} · ${esc(m.cat)}</span><h3>${esc(m.claim)}</h3><p>${esc(m.r)}</p><p class="meta">Keywords: ${m.k.map(g=>esc(g.slice(0,4).join(" / "))).join("  +  ")}</p><p class="meta">Sources: ${m.s.map(k=>`<a href="${SOURCES[k].u}" target="_blank" rel="noopener">${esc(SOURCES[k].n)}</a>`).join(" · ")}</p></div>`).join("")||'<p class="note">No myths match that search.</p>';
+}
+drawList();
+
+/* test mode */
+let log=[]; try{log=JSON.parse(localStorage.getItem("sc_log")||"[]")}catch(e){log=[]}
+$("#tester").innerHTML=Array.from({length:10},(_,i)=>`<option value="${i+1}">Tester ${i+1}</option>`).join("");
+let pending=null;
+$("#tgo").addEventListener("click",()=>{
+  const q=$("#tq").value.trim(); if(!q) return;
+  const r=check(q);
+  const said=r.status==="match"?`${r.best.m.v}: ${r.best.m.claim}`:"UNVERIFIED: not checked yet";
+  pending={t:$("#tester").value,q,said};
+  $("#tres").innerHTML=`SachCheck said: <strong>${esc(said)}</strong>. Was this the right answer?`;
+  $("#tmark").classList.remove("hide");
+});
+$("#tq").addEventListener("keydown",e=>{if(e.key==="Enter")$("#tgo").click();});
+function mark(ok){ if(!pending) return; log.push({...pending,ok}); pending=null; $("#tq").value=""; $("#tres").textContent=""; $("#tmark").classList.add("hide"); save(); drawLog(); $("#tq").focus(); }
+$("#tok").addEventListener("click",()=>mark(true));
+$("#tbad").addEventListener("click",()=>mark(false));
+function save(){try{localStorage.setItem("sc_log",JSON.stringify(log))}catch(e){}}
+function drawLog(){
+  const ok=log.filter(x=>x.ok).length, n=log.length;
+  $("#sTot").textContent=n; $("#sOk").textContent=ok; $("#sPeople").textContent=new Set(log.map(x=>x.t)).size;
+  $("#sAcc").textContent=n?Math.round(ok/n*1000)/10+"%":"–";
+  $("#formula").textContent=n?`Accuracy = ${ok} ÷ ${n} × 100 = ${Math.round(ok/n*1000)/10}%`:"Accuracy = correct ÷ total × 100";
+  $("#tlog").innerHTML=log.map((x,i)=>`<tr><td class="n" data-l="#">${i+1}</td><td data-l="Tester">Tester ${esc(x.t)}</td><td data-l="Claim typed">${esc(x.q)}</td><td data-l="Tool said">${esc(x.said)}</td><td data-l="Right?">${x.ok?"Right":"Wrong"}</td></tr>`).join("");
+}
+$("#tcopy").addEventListener("click",async()=>{
+  const ok=log.filter(x=>x.ok).length;
+  const txt=log.map((x,i)=>`${i+1}\tTester ${x.t}\t${x.q}\t${x.said}\t${x.ok?"Right":"Wrong"}`).join("\n")+`\n\nAccuracy = ${ok} ÷ ${log.length} × 100 = ${log.length?Math.round(ok/log.length*1000)/10:0}%`;
+  try{await navigator.clipboard.writeText(txt);$("#tmsg").textContent="Copied! Paste it into your notes.";}catch(e){$("#tmsg").textContent="Copy is blocked here: take a screenshot of the table instead.";}
+});
+$("#tclear").addEventListener("click",()=>{ if($("#tclear").dataset.sure){log=[];save();drawLog();$("#tclear").textContent="Start new test";delete $("#tclear").dataset.sure;} else {$("#tclear").dataset.sure=1;$("#tclear").textContent="Tap again to clear";} });
+drawLog();
+
+/* views */
+function show(){
+  const v=(location.hash||"#check").slice(1); const ok=["check","myths","test","how"].includes(v)?v:"check";
+  ["check","myths","test","how"].forEach(x=>$("#v-"+x).classList.toggle("hide",x!==ok));
+  document.querySelectorAll("nav a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.v===ok)||a.dataset.v===ok&&a.setAttribute("aria-current","page"));
+}
+addEventListener("hashchange",show); show();
+}
+</script>
+</body>
+</html>
